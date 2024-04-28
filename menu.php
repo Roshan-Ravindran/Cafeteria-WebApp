@@ -119,8 +119,8 @@ $user=$_SESSION['alogin'];
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-12">
-                                            <h3 class="page-title" style="padding: 8px;">MENU<?php echo htmlentities($result->name); ?></h3>
-                                            <div class="row">
+            <h3 class="page-title" style="padding: 8px;">MENU<?php echo htmlentities($result->name); ?></h3>
+            <div class="row">
 							<div class="col-md-12" style="padding: 8px;">
 								<div class="panel panel-default" style="padding: 8px;">
 									<div class="panel-heading"  >Menu</div>
@@ -187,35 +187,26 @@ th /* Only targeting <th> tag for gradient, change this to body to apply to whol
                                         $query1-> execute();
                                   
  					while ($row = $query->fetch( )) {
-                                            $categoryId=$row['pid'];
-                                            echo'
-                        
-                         <thead style="background:#535456; color:#ffffff;" >
-                         
-                           
+            $categoryId=$row['pid'];
+            echo'<thead style="background:#535456; color:#ffffff;" >         
 						  <th class="col-md-2"  style="text-transform: uppercase; width:10%;">
                             '.$row['name'].'
-                         
-						  
 						  </th>
-                         
+             
+            <th style="width:10%;" >
+              RATE
+              </th>
+            <th class="col-md-3" style="width:20%;">
+              QUANTITY
+              </th>
+
+           </thead>';
                             
-                            <th style="width:10%;" >
-                              RATE
-                              </th>
-                            <th class="col-md-3" style="width:20%;">
-                              QUANTITY
-                              </th>
-						
-                           </thead>';
-                            
-                     
-					
 					//$categoryId='.$row['cid'].';
-//  WHERE cid='$categoryId'
+          //  WHERE cid='$categoryId'
 					$sql2 ="SELECT * FROM items WHERE cid='$categoryId' AND status=1";
-                                         $query2= $objCon -> prepare($sql2);
-					 $query2-> execute();
+          $query2= $objCon -> prepare($sql2);
+					$query2-> execute();
                     
 					while ($row = $query->fetch()) {
                       array_push($pid,$row['pid']);
@@ -353,72 +344,57 @@ th /* Only targeting <th> tag for gradient, change this to body to apply to whol
                       }
         
     });
-
-                  
-                  
-                  
-   
   }
   
   
-                  var billpid = [];
+   var billpid = [];
    var billq= []; 
-                   var gst;
-    var nt;
+   var gst;
+   var nt;
    var gt=0;
-                  calc(0);
+   calc(0);
  
   function wc() {
   setTimeout(calc, 500);
   }
-              function calc() {
-                  
-                  var pids = [<?php echo '"'.implode('","', $pid).'"' ?>];
+  function calc() {              
+  var pids = [<?php echo '"'.implode('","', $pid).'"' ?>];
   var rates = [<?php echo '"'.implode('","', $rate).'"' ?>];
   // alert(pids[1]);
  // alert(rates);
     var arr = [];
-                 billpid = [];
+    billpid = [];
     billq= [];
-  var i;
-   gt=0;
-                gst=0;
-                nt=0;
-for (i = 0; i < pids.length; i++) { 
+    var i;
+    gt=0;
+    gst=0;
+    nt=0;
 
-  var aa= document.getElementsByName("pid-"+pids[i])[0].value;
-  arr.push(aa);
-  
-  if(aa>0)
-  {
-    billpid.push(pids[i]);
-    billq.push(aa);
+    for (i = 0; i < pids.length; i++) { 
+
+      var aa= document.getElementsByName("pid-"+pids[i])[0].value;
+      arr.push(aa);
+      
+      if(aa>0)
+      {
+        billpid.push(pids[i]);
+        billq.push(aa);
+      }
+    // alert(aa);
+    }
+      for (i = 0; i < arr.length; i++) { 
+        
+        gt=gt+(rates[i] * arr[i]);
+      }
+                        
+      gst=gt*0.05;
+      nt=gst+gt;
+      document.getElementById("gross_amount").value = gt;
+      document.getElementById("vat_charge").value = gst;
+      document.getElementById("net_amount").value = nt;
   }
- // alert(aa);
-}
-  for (i = 0; i < arr.length; i++) { 
-     
-     gt=gt+(rates[i] * arr[i]);
-  }
-                    
-                    gst=gt*0.05;
-                    nt=gst+gt;
-  document.getElementById("gross_amount").value = gt;
-  document.getElementById("vat_charge").value = gst;
-    document.getElementById("net_amount").value = nt;
-  
- // alert(arr);
-                }
-  
-  
-   
-  
-  
-  
-  
-  
-  
-                  </script>
+
+ </script>
 
 <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js" ></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
